@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIT Grade Predict System</title>
+    <!-- External fonts for modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Main styles -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar glass-panel">
+            <div class="sidebar-header">
+                <h2>VIT<br>Grade<br>Predict</h2>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" data-target="home" class="active">Home</a></li>
+                <li><a href="#" data-target="cgpa-view">CGPA Calculator</a></li>
+                <li><a href="#" data-target="gpa-view">GPA Calculator</a></li>
+                <li><a href="#" data-target="relative-grading-view">Relative Grading</a></li>
+            </ul>
+            <div class="theme-switch-wrapper">
+                <label class="theme-switch" for="checkbox">
+                    <input type="checkbox" id="checkbox" />
+                    <div class="slider round"></div>
+                </label>
+                <em class="theme-label">Dark Mode</em>
+            </div>
+            <div class="theme-switch-wrapper" style="margin-top: 10px;">
+                <label class="theme-switch" for="contrast-checkbox">
+                    <input type="checkbox" id="contrast-checkbox" />
+                    <div class="slider round"></div>
+                </label>
+                <em class="theme-label">High Contrast</em>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+
+            <!-- Home View -->
+            <section id="home" class="view active fade-in">
+                <div class="hero glass-panel">
+                    <h1>Welcome to VIT Grade Predict</h1>
+                    <p style="font-size: 20px">Your one-stop solution for CGPA, GPA and Advanced Relative Grading
+                        calculations.<br>This
+                        application follows the grading system rules that are being followed at VIT Chennai.</p>
+                    <div class="hero-buttons">
+                        <button class="btn btn-primary nav-btn" data-target="cgpa-view">Calculate CGPA</button>
+                        <button class="btn btn-secondary nav-btn" data-target="relative-grading-view">Relative
+                            Grading</button>
+                    </div>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card glass-panel">
+                        <h3>CGPA Calculator</h3>
+                        <p style="font-size: 18px">Easily calculate your cumulative grade point average based on current
+                            standing and new
+                            semester credits.</p>
+                    </div>
+                    <div class="feature-card glass-panel">
+                        <h3>GPA Calculator</h3>
+                        <p style="font-size: 18px">Calculate your semester GPA by entering course grades and credits.
+                        </p>
+                    </div>
+                    <div class="feature-card glass-panel">
+                        <h3>Relative Grading</h3>
+                        <p style="font-size: 18px">Advanced tool for educators to generate boundaries based on standard
+                            deviation and mean
+                            rules, supporting iterations and probabilities.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CGPA View -->
+            <section id="cgpa-view" class="view">
+                <div class="calculator-container glass-panel">
+                    <h2>CGPA Calculator</h2>
+                    <form id="cgpa-form">
+                        <div class="form-group">
+                            <label for="current-cgpa">Current CGPA</label>
+                            <input type="number" id="current-cgpa" step="0.01" min="0" max="10" required
+                                placeholder="e.g., 8.5">
+                        </div>
+                        <div class="form-group">
+                            <label for="credits-completed">Credits Completed So Far</label>
+                            <input type="number" id="credits-completed" step="0.5" min="0" required
+                                placeholder="e.g., 90">
+                        </div>
+                        <div class="form-group">
+                            <label for="current-gpa">This Semester GPA</label>
+                            <input type="number" id="current-gpa" step="0.01" min="0" max="10" required
+                                placeholder="e.g., 9.0">
+                        </div>
+                        <div class="form-group">
+                            <label for="semester-credits">Credits This Semester</label>
+                            <input type="number" id="semester-credits" step="0.5" min="0" required
+                                placeholder="e.g., 20">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Calculate CGPA</button>
+                    </form>
+
+                    <div id="cgpa-result" class="result-box hidden">
+                        <h3>Your New CGPA: <span id="cgpa-output">--</span></h3>
+                    </div>
+                </div>
+            </section>
+
+            <!-- GPA View -->
+            <section id="gpa-view" class="view">
+                <div class="calculator-container glass-panel gpa-panel">
+                    <h2>GPA Calculator</h2>
+                    <p class="subtitle">Standard 10-point scale: S(10), A(9), B(8), C(7), D(6), E(5), F(0)</p>
+
+                    <div class="table-container">
+                        <table id="gpa-table">
+                            <thead>
+                                <tr>
+                                    <th>Course Name (Optional)</th>
+                                    <th>Grade</th>
+                                    <th>Credits</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="gpa-tbody">
+                                <!-- Dynamic rows go here -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="gpa-actions">
+                        <button id="add-gpa-row" class="btn btn-secondary">+ Add Course</button>
+                        <button id="calc-gpa-btn" class="btn btn-primary">Calculate GPA</button>
+                    </div>
+
+                    <div id="gpa-result" class="result-box hidden">
+                        <h3>Your GPA: <span id="gpa-output">--</span></h3>
+                        <p>Total Credits: <span id="gpa-total-credits">--</span></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Relative Grading View -->
+            <section id="relative-grading-view" class="view">
+                <!-- We will populate this view dynamically via JS or build it here. 
+                     Building the shell here is better for SPA design. -->
+                <div id="rg-input-section">
+                    <div class="calculator-container glass-panel rg-panel">
+                        <h2>Relative Grading Calculator</h2>
+                        <form id="rg-form">
+                            <div class="grid-2-col">
+                                <div class="form-group">
+                                    <label for="rg-course-code">Course Code</label>
+                                    <input type="text" id="rg-course-code" required placeholder="e.g., CS101">
+                                </div>
+                                <div class="form-group">
+                                    <label for="rg-course-title">Course Title</label>
+                                    <input type="text" id="rg-course-title" required placeholder="Data Structures">
+                                </div>
+                                <div class="form-group">
+                                    <label for="rg-total-students">Total Students</label>
+                                    <input type="number" id="rg-total-students" min="1" required placeholder="e.g., 60">
+                                </div>
+                                <div class="form-group">
+                                    <label for="rg-iterations">Iterations (1-10)</label>
+                                    <input type="range" id="rg-iterations" min="1" max="10" value="1"
+                                        class="slider-input">
+                                    <span id="iter-val" class="iter-display">1</span>
+                                </div>
+                            </div>
+
+                            <div class="options-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="rg-is-core" checked>
+                                    <span class="custom-checkbox"></span>
+                                    Discipline Core Paper
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="rg-is-absolute">
+                                    <span class="custom-checkbox"></span>
+                                    Force Absolute Grading (Auto for <=10 students) </label>
+                            </div>
+
+                            <hr class="divider">
+
+                            <!-- Dataset List Configurations -->
+                            <h3>Dataset Configuration Ranges</h3>
+                            <p class="subtitle">Specify the ranges to generate random marks.</p>
+                            <div id="rg-range-container">
+                                <!-- Dynamic ranges -->
+                            </div>
+                            <button type="button" id="add-rg-range" class="btn btn-secondary btn-sm">+ Add
+                                Range</button>
+
+                            <hr class="divider">
+
+                            <!-- Specific Marks Configuration -->
+                            <h3>Specific Marks (Optional)</h3>
+                            <p class="subtitle">Marks that MUST be in the dataset.</p>
+                            <div class="form-group">
+                                <input type="text" id="rg-specific-marks" placeholder="e.g., 95, 82, 45">
+                                <small>Comma separated values (0-100).</small>
+                            </div>
+
+                            <div class="rg-actions">
+                                <button type="submit" class="btn btn-primary w-100">Generate & Calculate
+                                    Borders</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Results Section (Hidden initially) -->
+                <div id="rg-result-section" class="hidden">
+                    <div class="calculator-container glass-panel result-panel">
+                        <div class="result-header">
+                            <h2>Grading Results</h2>
+                            <button id="rg-back-btn" class="btn btn-secondary">← Back to Edit</button>
+                        </div>
+
+                        <div id="rg-summary-info" class="rg-summary">
+                            <!-- Course info and mean/sd will go here -->
+                        </div>
+
+                        <div class="charts-container grid-2-col">
+                            <div class="chart-wrapper">
+                                <canvas id="pieChart"></canvas>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="barChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="grid-2-col margins-top">
+                            <div>
+                                <h3>Grade Distribution</h3>
+                                <table class="result-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Grade</th>
+                                            <th>Range Limit</th>
+                                            <th>Count</th>
+                                            <th>Percentage</th>
+                                            <th>Boundary Rules Used</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="rg-distribution-tbody">
+                                        <!-- Distribution fills here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div>
+                                <h3>Iteration Border Probabilities</h3>
+                                <div id="rg-probabilities-container" class="prob-container">
+                                    <!-- Iteration probability breakdown -->
+                                    <p class="text-muted">Run multiple iterations to see probabilities here.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dataset-export margins-top">
+                            <div class="header-with-button">
+                                <h3>Generated Dataset</h3>
+                                <div>
+                                    <button id="export-csv-btn" class="btn btn-primary btn-sm">Download CSV</button>
+                                    <button id="export-txt-btn" class="btn btn-secondary btn-sm"
+                                        style="margin-left: 5px;">Download TXT</button>
+                                </div>
+                            </div>
+                            <div class="dataset-scrollable" id="rg-dataset-display">
+                                <!-- Dataset values -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <!-- Offline Chart.js -->
+    <script src="js/chart.min.js"></script>
+
+    <!-- Application Scripts -->
+    <script src="js/app.js"></script>
+    <script src="js/cgpa.js"></script>
+    <script src="js/gpa.js"></script>
+    <script src="js/relative_grading.js"></script>
+</body>
+
+</html>
